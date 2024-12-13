@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a2e;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Stars background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 4px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: starTwinkle 10s linear infinite;
+            z-index: -1;
+        }
+
+        /* Gradient overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Moving starfield effect */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="1" fill="white" /></svg>') repeat;
+            animation: moveStars 60s linear infinite;
+            z-index: -2;
+        }
+
+        @keyframes moveStars {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 1000px; }
+        }
+
+        /* Shooting star effect */
+        @keyframes shootingStars {
+            0% { transform: translateX(200%) translateY(-200%); }
+            100% { transform: translateX(-200%) translateY(200%); }
+        }
+
+        .shooting-star {
+            position: fixed;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, white, transparent);
+            animation: shootingStars 3s linear infinite;
+            opacity: 0;
+        }
+
+        .shooting-star:nth-child(1) { top: 10%; animation-delay: 0s; }
+        .shooting-star:nth-child(2) { top: 30%; animation-delay: 1.5s; }
+
+        @keyframes starTwinkle {
+            from { background-position: 0 0, 40px 60px, 130px 270px; }
+            to { background-position: -550px 550px, -350px 350px, -250px 250px; }
+        }
+
+        .fact-card {
+            background-color: rgba(22, 36, 71, 0.8);
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(62, 118, 252, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .fact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(62, 118, 252, 0.4);
+            background-color: rgba(22, 36, 71, 0.9);
+        }
+
+        h1 {
+            text-align: center;
+            color: #e43f5a;
+            text-shadow: 0 0 10px rgba(228, 63, 90, 0.7);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(228, 63, 90, 0.7); }
+            to { text-shadow: 0 0 20px rgba(228, 63, 90, 0.9), 0 0 30px rgba(228, 63, 90, 0.5); }
+        }
+
+        .fact-number {
+            color: #e43f5a;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield"></div>
+    <div class="gradient-overlay"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+
+    <h1>Amazing Space Facts</h1>
+    <div id="facts-container"></div>
+
+    <script>
+        const spaceData = {
+            "spaceFacts": [
+                {
+                    "id": 1,
+                    "fact": "Light from the Sun takes approximately 8 minutes and 20 seconds to reach Earth."
+                },
+                {
+                    "id": 2,
+                    "fact": "One day on Venus is longer than its year. Venus takes 243 Earth days to rotate on its axis."
+                },
+                {
+                    "id": 3,
+                    "fact": "The largest known star, UY Scuti, is more than 1,700 times larger than our Sun."
+                },
+                {
+                    "id": 4,
+                    "fact": "The footprints left by Apollo astronauts on the Moon will last for at least 100 million years."
+                },
+                {
+                    "id": 5,
+                    "fact": "The Milky Way galaxy contains approximately 200-400 billion stars."
+                },
+                {
+                    "id": 6,
+                    "fact": "A black hole's gravitational pull is so strong that not even light can escape from it."
+                },
+                {
+                    "id": 7,
+                    "fact": "The highest mountain known to humans is on Mars - Olympus Mons, standing at 21.9 km."
+                },
+                {
+                    "id": 8,
+                    "fact": "There are more stars in the universe than grains of sand on all of Earth's beaches."
+                },
+                {
+                    "id": 9,
+                    "fact": "Saturn's rings are mostly made up of water ice and rock fragments."
+                },
+                {
+                    "id": 10,
+                    "fact": "The space between galaxies is not completely empty; it contains about one atom per cubic meter."
+                },
+                {
+                    "id": 11,
+                    "fact": "Neutron stars can spin at a rate of 600 rotations per second."
+                },
+                {
+                    "id": 12,
+                    "fact": "The universe is estimated to be about 13.8 billion years old."
+                },
+                {
+                    "id": 13,
+                    "fact": "There is a planet made of diamonds, called 55 Cancri e."
+                },
+                {
+                    "id": 14,
+                    "fact": "The International Space Station travels at a speed of about 17,500 mph."
+                },
+                {
+                    "id": 15,
+                    "fact": "Jupiter has at least 79 moons orbiting around it."
+                },
+                {
+                    "id": 16,
+                    "fact": "A day on Mercury lasts approximately 176 Earth days."
+                },
+                {
+                    "id": 17,
+                    "fact": "The largest known galaxy, IC 1101, is over 50 times the size of the Milky Way."
+                },
+                {
+                    "id": 18,auts grow slightly taller (about 2 inches) when in space."
+                },
+                {
+                    "id": 19,
+                    "fact": "The core temperature of the Sun is about 15 million degrees Celsius."
+                },
+                {
+                    "id": 20,
+                    "fact": "There are more trees on Earth than stars in the Milky Way galaxy."
+                }
+            ]
+        };
+
+        function displayFacts() {
+            const container = document.getElementById('facts-container');
+            spaceData.spaceFacts.forEach(item => {
+                const factDiv = document.createElement('div');
+                factDiv.className = 'fact-card';
+                factDiv.innerHTML = `
+                    <span class="fact-number">Fact #${item.id}</span>
+                    ${item.fact}
+                `;
+                container.appendChild(factDiv);
+            });
+        }
+
+        window.onload = displayFacts;
+    </script>
+</body>
+</html>
